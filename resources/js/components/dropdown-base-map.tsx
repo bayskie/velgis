@@ -17,7 +17,7 @@ export const BASE_MAPS: { name: string; url: string; attribution: string }[] = [
 
 export default function DropdownBaseMap({ onBaseMapChange }: { onBaseMapChange: (tile: (typeof BASE_MAPS)[0]) => void }) {
     const [baseMap, setBaseMap] = useState(BASE_MAPS[0]);
-    ``;
+
     useEffect(() => {
         onBaseMapChange(baseMap);
     }, [baseMap, onBaseMapChange]);

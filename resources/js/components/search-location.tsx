@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import L, { Icon } from 'leaflet';
 import { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 
@@ -8,6 +8,13 @@ type SearchLocationProps = {
 
 export default function SearchLocation({ searchQuery }: SearchLocationProps) {
     const map = useMap();
+
+    const markerIcon = new Icon({
+        iconUrl: '/icons/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -41],
+    });
 
     useEffect(() => {
         if (!searchQuery) return;
@@ -19,7 +26,7 @@ export default function SearchLocation({ searchQuery }: SearchLocationProps) {
                 const { lat, lon, display_name } = data[0];
                 const position: [number, number] = [parseFloat(lat), parseFloat(lon)];
                 map.setView(position, 13);
-                L.marker(position).addTo(map).bindPopup(display_name).openPopup();
+                L.marker(position, { icon: markerIcon }).addTo(map).bindPopup(display_name).openPopup();
             }
         };
 

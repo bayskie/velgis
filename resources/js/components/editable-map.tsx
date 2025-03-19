@@ -1,5 +1,5 @@
 import { Feature, GeoJsonProperties, Geometry } from 'geojson';
-import L, { DrawEvents } from 'leaflet';
+import L, { DrawEvents, Icon } from 'leaflet';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet/dist/leaflet.css';
 import { useCallback, useState } from 'react';
@@ -20,6 +20,13 @@ type GeoJSONShape = {
 
 export default function EditableMap({ currentPosition, baseMap, searchQuery }: EditableMapProps) {
     const [drawnShapes, setDrawnShapes] = useState<GeoJSONShape[]>([]);
+
+    const markerIcon = new Icon({
+        iconUrl: '/icons/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -41],
+    });
 
     const getGeoJSON = (layer: L.Layer): GeoJSONShape | null => {
         const leafletId = (layer as any)._leaflet_id;
@@ -67,11 +74,20 @@ export default function EditableMap({ currentPosition, baseMap, searchQuery }: E
                     onCreated={_onCreated}
                     onEdited={_onEdited}
                     onDeleted={_onDeleted}
-                    draw={{ polyline: true, polygon: true, rectangle: true, circle: true, marker: true, circlemarker: true }}
+                    draw={{
+                        polyline: true,
+                        polygon: true,
+                        rectangle: true,
+                        circle: true,
+                        marker: {
+                            icon: markerIcon,
+                        },
+                        circlemarker: true,
+                    }}
                 />
             </FeatureGroup>
             <TileLayer url={baseMap.url} attribution={baseMap.attribution} />
-            <Marker position={currentPosition}>
+            <Marker position={currentPosition} icon={markerIcon}>
                 <Popup>You are here!</Popup>
             </Marker>
             <ZoomControl position="bottomright" />
