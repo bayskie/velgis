@@ -2,17 +2,12 @@
 
 use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return redirect(route('map.index'));
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
-
     Route::get('/map', [MapController::class, 'index'])->name('map.index');
     Route::post('/map/bulk', [MapController::class, 'bulkUpsert'])->name('map.bulkUpsert');
 });
